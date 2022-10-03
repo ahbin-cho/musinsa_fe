@@ -1,46 +1,126 @@
+import { useState, useRef, useEffect, useCallback } from "react";
 import "./SearchList.css";
 
-// {
-//     "goodsNo": 1759350,
-//     "goodsName": "[SET] 베이직 라인 셋업",
-//     "price": 59000,
-//     "brandName": "에프씨엠엠",
-//     "imageUrl": "https://image.msscdn.net/images/goods_img/20210122/1759350/1759350_2_500.jpg",
-//     "linkUrl": "https://store.musinsa.com/app/goods/1759350",
-//     "brandLinkUrl": "https://www.musinsa.com/brands/fcmm",
-//     "normalPrice": 74000,
-//     "isSale": true,
-//     "saleRate": 20,
-//     "isSoldOut": false,
-//     "isExclusive": false
-//   }
+const options = {
+  root: null, //기본 null, 관찰대상의 부모요소를 지정
+  rootMargin: "20px", // 관찰하는 뷰포트의 마진 지정
+  threshold: 1.0, // 관찰요소와 얼만큼 겹쳤을 때 콜백을 수행하도록 지정하는 요소
+};
 
 export const SearchList = () => {
+  const [bottom, setBottom] = useState(null);
+  const [searchList, setSearchList] = useState([]);
+  const [page, setPage] = useState(0);
+
+  const bottomObserver = useRef(null);
+
+  const getSearchList = useCallback(async ({ searchPage = 0 }) => {
+    try {
+      const response = await fetch(
+        `https://static.msscdn.net/musinsaUI/homework/data/goods${searchPage}.json`
+      );
+      const { data } = await response.json();
+
+      setSearchList((prev) => {
+        const tempArr = [...prev, ...data.list];
+        return tempArr.filter((item, index) => {
+          if (
+            tempArr.findIndex((d) => {
+              return d.goodsNo === item.goodsNo;
+            }) === index
+          ) {
+            return item;
+          }
+        });
+      });
+    } catch (e) {
+      console.error(e.message);
+    }
+  }, []);
+
+  const handleObserver = useCallback(async (entries) => {
+    const target = entries[0];
+    if (target.isIntersecting) {
+      setPage((prev) => {
+        if (prev < 3) {
+          return prev + 1;
+        } else {
+          return prev;
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    getSearchList({ searchPage: page });
+  }, [page, getSearchList]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, options);
+    bottomObserver.current = observer;
+    return () => observer.disconnect();
+  }, [handleObserver]);
+
+  useEffect(() => {
+    const observer = bottomObserver.current;
+    if (bottom) {
+      observer.observe(bottom);
+    }
+    return () => {
+      if (bottom) {
+        observer.unobserve(bottom);
+      }
+    };
+  }, [bottom]);
+
   return (
     <div className="search-list-page">
-      <div className="search-list-item">
-        <img src="https://image.msscdn.net/images/goods_img/20210122/1759350/1759350_2_500.jpg" />
-        <div className="item-info">
-          <div className="brand-name">브랜드명</div>
-          <div className="product-name">상품명</div>
-          <div className="price">
-            <div>
-              할인가격
-              <span>100%</span>
+      {searchList.map((item) => {
+        const {
+          goodsNo,
+          goodsName,
+          price,
+          brandName,
+          imageUrl,
+          normalPrice,
+          isSale,
+          saleRate,
+          isSoldOut,
+          isExclusive,
+        } = item;
+        return (
+          <div className="search-list-item" key={goodsNo}>
+            <img
+              src={imageUrl}
+              alt={goodsNo}
+              onError={(e) => {
+                return (e.target.src =
+                  "https://image.msscdn.net/musinsaUI/homework/data/img.jpg");
+              }}
+            />
+            <div className="item-info">
+              <div className="brand-name">{brandName}</div>
+              <div className="product-name">{goodsName}</div>
+              <div className="price">
+                {isSale ? (
+                  <>
+                    <div className="sale-price">
+                      {price}
+                      <span className="sale-rate">{saleRate}%</span>
+                    </div>
+                    <div className="normal-price">{normalPrice}</div>
+                  </>
+                ) : (
+                  <>
+                    <div>{price}</div>
+                  </>
+                )}
+              </div>
             </div>
-            정가
           </div>
-        </div>
-      </div>
-      <div className="search-list-item">
-        <img src="https://image.msscdn.net/images/goods_img/20210122/1759350/1759350_2_500.jpg" />
-      </div>
-      <div className="search-list-item">
-        <img src="https://image.msscdn.net/images/goods_img/20210122/1759350/1759350_2_500.jpg" />
-      </div>
-      <div className="search-list-item">
-        <img src="https://image.msscdn.net/images/goods_img/20210122/1759350/1759350_2_500.jpg" />
-      </div>
+        );
+      })}
+      <div ref={setBottom} />
     </div>
   );
 };
