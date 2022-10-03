@@ -1,7 +1,16 @@
 .App {
+  width: 375px;
+  height: 812px;
   text-align: center;
-}
+  margin: auto;
 
+  background-color: white;
+
+  /* font-family: 'Apple SD Gothic Neo'; */
+  font-style: normal;
+
+}
+/* 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +44,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
