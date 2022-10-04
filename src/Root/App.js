@@ -1,6 +1,6 @@
+import { Header } from "../Components/Common/Header";
+import { SearchFilters } from "../Components/Common/SearchFilters";
 import "./App.css";
-import { Header } from "./Components/Header";
-import { SearchFilters } from "./Components/SearchFilters";
 
 function App() {
   return (

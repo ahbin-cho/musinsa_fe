@@ -3,6 +3,13 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    position: fixed;
+    width: 375px;
+    top: 50px;
+    background-color: white;
+    border-bottom: 8px solid #F1F1F1;
+    z-index: 1;
 }
 
 .type-button {

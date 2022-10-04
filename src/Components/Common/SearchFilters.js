@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
+import { SearchList } from "../SearchList";
 import "./SearchFilters.css";
-import { SearchList } from "./SearchList";
 
 export const SearchFilters = () => {
   const [filterList, setFilterList] = useState(new Set());

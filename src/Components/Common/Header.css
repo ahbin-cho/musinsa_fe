@@ -1,0 +1,10 @@
+.common-header {
+    height: 50px;
+    line-height: 50px;
+
+    position: fixed;
+    top: 0px;
+    width: 375px;
+    background-color: white;
+    z-index: 1;
+}
