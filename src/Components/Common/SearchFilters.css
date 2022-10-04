@@ -1,8 +1,5 @@
 .common-search-filters {
-    height: 55px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+
 
     position: fixed;
     width: 375px;
@@ -10,6 +7,12 @@
     background-color: white;
     border-bottom: 8px solid #F1F1F1;
     z-index: 1;
+}
+.search-filters-type {
+    height: 55px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .type-button {

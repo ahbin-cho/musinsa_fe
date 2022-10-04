@@ -8,6 +8,10 @@
     align-content: flex-start;
 }
 
+.search-list-page.has-filter {
+    margin-top: 165px;
+}
+
 .search-list-item {
     flex: 1;
     flex-basis: 50%;

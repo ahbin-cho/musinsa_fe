@@ -104,7 +104,11 @@ export const SearchList = (props) => {
   }, [bottom]);
 
   return (
-    <div className="search-list-page">
+    <div
+      className={`search-list-page ${
+        props.filter.size > 0 ? "has-filter" : ""
+      }`}
+    >
       {searchList.map((item) => {
         const {
           goodsNo,

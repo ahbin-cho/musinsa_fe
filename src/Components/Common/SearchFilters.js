@@ -57,54 +57,56 @@ export const SearchFilters = () => {
   return (
     <>
       <div className="common-search-filters">
-        {/* <button className="type-button" onClick={onClickSearchProductName}>
+        <div className="search-filters-type">
+          {/* <button className="type-button" onClick={onClickSearchProductName}>
           검색
           <img src="./Search.png" alt="search" />
         </button> */}
-        <button
-          className={`type-button ${isClickSale ? "button-active" : ""}`}
-          onClick={onClickBtnFilterSale}
-        >
-          세일상품
-        </button>
-        <button
-          className={`type-button ${isClickExclusive ? "button-active" : ""}`}
-          onClick={onClickBtnFilterExclusive}
-        >
-          단독상품
-        </button>
-        <button
-          className={`type-button ${isClickSoldout ? "button-active" : ""}`}
-          onClick={onClickBtnFilterSoldout}
-        >
-          품절포함
-        </button>
-      </div>
-
-      {filterList.size > 0 && (
-        <div className="tag-filters">
-          {Array.from(filterList).map((filter) => {
-            return (
-              <div className="tag" key={filter}>
-                {filter === "isSale"
-                  ? "세일상품"
-                  : filter === "isExclusive"
-                  ? "단독상품"
-                  : "품절포함"}
-
-                <button
-                  className="btn-tag-delete"
-                  onClick={() => {
-                    onClickBtnTagDelete(filter);
-                  }}
-                >
-                  X
-                </button>
-              </div>
-            );
-          })}
+          <button
+            className={`type-button ${isClickSale ? "button-active" : ""}`}
+            onClick={onClickBtnFilterSale}
+          >
+            세일상품
+          </button>
+          <button
+            className={`type-button ${isClickExclusive ? "button-active" : ""}`}
+            onClick={onClickBtnFilterExclusive}
+          >
+            단독상품
+          </button>
+          <button
+            className={`type-button ${isClickSoldout ? "button-active" : ""}`}
+            onClick={onClickBtnFilterSoldout}
+          >
+            품절포함
+          </button>
         </div>
-      )}
+
+        {filterList.size > 0 && (
+          <div className="tag-filters">
+            {Array.from(filterList).map((filter) => {
+              return (
+                <div className="tag" key={filter}>
+                  {filter === "isSale"
+                    ? "세일상품"
+                    : filter === "isExclusive"
+                    ? "단독상품"
+                    : "품절포함"}
+
+                  <button
+                    className="btn-tag-delete"
+                    onClick={() => {
+                      onClickBtnTagDelete(filter);
+                    }}
+                  >
+                    X
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
       <SearchList filter={filterList} />
     </>
   );
