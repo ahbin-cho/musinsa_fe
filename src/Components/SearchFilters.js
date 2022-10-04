@@ -57,10 +57,10 @@ export const SearchFilters = () => {
   return (
     <>
       <div className="common-search-filters">
-        <button className="type-button" onClick={onClickSearchProductName}>
+        {/* <button className="type-button" onClick={onClickSearchProductName}>
           검색
           <img src="./Search.png" alt="search" />
-        </button>
+        </button> */}
         <button
           className={`type-button ${isClickSale ? "button-active" : ""}`}
           onClick={onClickBtnFilterSale}

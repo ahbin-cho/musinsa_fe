@@ -21,6 +21,15 @@
     width: 100%;
     flex-basis: 60%;
 }
+.search-list-item .exclusive-label {
+    width: 37px;
+    height: 33px;
+    position: absolute;
+    background: #18A286;
+    color: white;
+    line-height: 33px;
+    text-align: center;
+}
 
 .item-info {
     padding: 3px;

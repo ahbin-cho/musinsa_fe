@@ -1,10 +1,11 @@
+/* eslint-disable array-callback-return */
 import { useState, useRef, useEffect, useCallback } from "react";
 import "./SearchList.css";
 
 const options = {
-  root: null, //기본 null, 관찰대상의 부모요소를 지정
-  rootMargin: "20px", // 관찰하는 뷰포트의 마진 지정
-  threshold: 1.0, // 관찰요소와 얼만큼 겹쳤을 때 콜백을 수행하도록 지정하는 요소
+  root: null,
+  rootMargin: "20px",
+  threshold: 1.0,
 };
 
 export const SearchList = (props) => {
@@ -113,6 +114,7 @@ export const SearchList = (props) => {
           imageUrl,
           normalPrice,
           isSale,
+          isExclusive,
           saleRate,
         } = item;
         return (
@@ -125,6 +127,7 @@ export const SearchList = (props) => {
                   "https://image.msscdn.net/musinsaUI/homework/data/img.jpg");
               }}
             />
+            {isExclusive && <div className="exclusive-label">단독</div>}
             <div className="item-info">
               <div className="brand-name">{brandName}</div>
               <div className="product-name">{goodsName}</div>
