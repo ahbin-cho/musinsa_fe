@@ -20,4 +20,30 @@
     
     font-weight: 400;
     font-size: 14px;
+    
+}
+
+.type-button.button-active {
+    color: #0078FF;
+}
+
+.tag-filters {
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+.tag-filters .tag {
+    background: #0078FF;
+    border-radius: 4px;
+
+    color: white;
+    padding: 5px;
+    margin: 3px;
+    font-size: 12px;
+}
+
+.btn-tag-delete {
+    border: none;
+    background: none;
+    color: white;
 }

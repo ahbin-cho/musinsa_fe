@@ -7,14 +7,14 @@ const options = {
   threshold: 1.0, // 관찰요소와 얼만큼 겹쳤을 때 콜백을 수행하도록 지정하는 요소
 };
 
-export const SearchList = () => {
+export const SearchList = (props) => {
   const [bottom, setBottom] = useState(null);
   const [searchList, setSearchList] = useState([]);
   const [page, setPage] = useState(0);
 
   const bottomObserver = useRef(null);
 
-  const getSearchList = useCallback(async ({ searchPage = 0 }) => {
+  const getSearchList = useCallback(async ({ searchPage = 0, param }) => {
     try {
       const response = await fetch(
         `https://static.msscdn.net/musinsaUI/homework/data/goods${searchPage}.json`
@@ -22,8 +22,8 @@ export const SearchList = () => {
       const { data } = await response.json();
 
       setSearchList((prev) => {
-        const tempArr = [...prev, ...data.list];
-        return tempArr.filter((item, index) => {
+        let tempArr = [...prev, ...data.list];
+        tempArr = tempArr.filter((item, index) => {
           if (
             tempArr.findIndex((d) => {
               return d.goodsNo === item.goodsNo;
@@ -32,6 +32,30 @@ export const SearchList = () => {
             return item;
           }
         });
+
+        if (param.has("isSale")) {
+          tempArr = tempArr.filter((item) => {
+            if (item.isSale) {
+              return item;
+            }
+          });
+        }
+        if (param.has("isExclusive")) {
+          tempArr = tempArr.filter((item) => {
+            if (item.isExclusive) {
+              return item;
+            }
+          });
+        }
+        if (!param.has("isSoldOut")) {
+          tempArr = tempArr.filter((item) => {
+            if (!item.isSoldOut) {
+              return item;
+            }
+          });
+        }
+
+        return tempArr;
       });
     } catch (e) {
       console.error(e.message);
@@ -52,8 +76,13 @@ export const SearchList = () => {
   }, []);
 
   useEffect(() => {
-    getSearchList({ searchPage: page });
+    getSearchList({ searchPage: page, param: props.filter });
   }, [page, getSearchList]);
+
+  useEffect(() => {
+    setPage(0);
+    setSearchList([]);
+  }, [props]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, options);
@@ -85,8 +114,6 @@ export const SearchList = () => {
           normalPrice,
           isSale,
           saleRate,
-          isSoldOut,
-          isExclusive,
         } = item;
         return (
           <div className="search-list-item" key={goodsNo}>
@@ -105,14 +132,21 @@ export const SearchList = () => {
                 {isSale ? (
                   <>
                     <div className="sale-price">
-                      {price}
+                      {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
                       <span className="sale-rate">{saleRate}%</span>
                     </div>
-                    <div className="normal-price">{normalPrice}</div>
+                    <div className="normal-price">
+                      {normalPrice
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      원
+                    </div>
                   </>
                 ) : (
                   <>
-                    <div>{price}</div>
+                    <div>
+                      {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+                    </div>
                   </>
                 )}
               </div>
